@@ -20,4 +20,7 @@ Redmine::Plugin.register :redmine_evolvingweb_extensions do
       return macro_exists?("issue_details")
     end
   end
+
+  menu :top_menu, :my_timesheet, "/time_entries/report?utf8=✓&criteria[]=user&criteria[]=project&criteria[]=issue&f[]=spent_on&op[spent_on]=><t-&v[spent_on][]=7&f[]=&c[]=project&c[]=spent_on&c[]=user&c[]=activity&c[]=issue&c[]=comments&c[]=hours&columns=day"
+
 end
