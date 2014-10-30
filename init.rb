@@ -1,5 +1,8 @@
 require 'redmine'
 
+# redirects homepage to /my/home
+require_dependency "welcome_controller_patch"
+
 Redmine::Plugin.register :redmine_evolvingweb_extensions do
   name 'Redmine Evolving Web Extensions'
   author 'Alex Dergachev'

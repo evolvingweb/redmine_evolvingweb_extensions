@@ -13,3 +13,7 @@ The latter is provided by [https://github.com/hampom/redmine_wiki_issue_details]
 Adds a "My Timesheet" link to the main menu. Links to the following:
 
 `/time_entries/report?utf8=✓&criteria[]=user&criteria[]=project&criteria[]=issue&f[]=spent_on&op[spent_on]=><t-&v[spent_on][]=7&f[]=&c[]=project&c[]=spent_on&c[]=user&c[]=activity&c[]=issue&c[]=comments&c[]=hours&columns=day`
+
+## Homepage redirect
+
+When visiting `http://redmine-url.com`, the visitor is redirected to `http://redmine-url.com/my/page`.
