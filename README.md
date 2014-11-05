@@ -17,3 +17,8 @@ Adds a "My Timesheet" link to the main menu. Links to the following:
 ## Homepage redirect
 
 When visiting `http://redmine-url.com`, the visitor is redirected to `http://redmine-url.com/my/page`.
+
+## Subtask Clone link
+
+Adds a "Clone" link next to the Subtask tree's "Add" link, which works the same but copies all metatada.
+Only on issue pages.
