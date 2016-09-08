@@ -2,6 +2,7 @@ require 'redmine'
 
 # redirects homepage to /my/home
 require_dependency "welcome_controller_patch"
+require_dependency "timelog_report_patch"
 require_dependency "evolvingweb_extensions/hooks"
 
 Redmine::Plugin.register :redmine_evolvingweb_extensions do
@@ -15,7 +16,7 @@ Redmine::Plugin.register :redmine_evolvingweb_extensions do
 
 
   Redmine::WikiFormatting::Macros.register do
-    desc "Alias {{id(100)}} to {{issue_details(100)}}" 
+    desc "Alias {{id(100)}} to {{issue_details(100)}}"
     macro :id do |obj, args|
       # return Redmine::WikiFormatting::Macros::Definitions.new.methods.inspect
       args = args.join(", ")
