@@ -22,3 +22,7 @@ When visiting `http://redmine-url.com`, the visitor is redirected to `http://red
 
 Adds a "Clone" link next to the Subtask tree's "Add" link, which works the same but copies all metatada.
 Only on issue pages.
+
+## Links in timesheet reports
+
+Issues in timesheet reports are now clickable links.
