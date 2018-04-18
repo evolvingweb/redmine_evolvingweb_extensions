@@ -26,3 +26,8 @@ Only on issue pages.
 ## Links in timesheet reports
 
 Issues in timesheet reports are now clickable links.
+
+
+## Broken issue description text area
+
+The upgraded plugin `redmine_wiki_extensions` breaks the layout issue. This small CSS fixes that.
