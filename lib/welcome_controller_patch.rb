@@ -11,7 +11,7 @@ module WelcomeControllerPatch
 
   module InstanceMethods
     def forward_to_startpage
-      redirect_to( :controller => "my", :action => "page")
+      redirect_to( :controller => "wiki", :action => "show", :project_id => "redmine")
     end
   end
 end
