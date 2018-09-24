@@ -1,7 +1,9 @@
-<% project_id = Project.where(identifier: "redmine").first.id
-    wiki_id = Wiki.where(project_id: project_id).first.id
-    page_id = WikiPage.where(wiki_id: wiki_id).first.id
-    content = WikiContent.where(page_id: page_id).first %>
+<%  
+settings = Setting['plugin_redmine_evolvingweb_extensions']
+project_id = Project.where(identifier: settings['wiki_block_project']).first.id
+page_id = Wiki.where(project_id: project_id).first.find_page(settings['wiki_block_title']).id
+content = WikiContent.where(page_id: page_id).first
+%>
 
 
  <%= render(:partial => "wiki/content", :locals => {:content => content}) %>
