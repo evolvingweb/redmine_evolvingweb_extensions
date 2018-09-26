@@ -1,7 +1,6 @@
 <%  
-settings = Setting['plugin_redmine_evolvingweb_extensions']
-project_id = Project.where(identifier: settings['wiki_block_project']).first.id
-page_id = Wiki.where(project_id: project_id).first.find_page(settings['wiki_block_title']).id
+project_id = Project.where(identifier: "operations").first.id
+page_id = Wiki.where(project_id: project_id).first.find_page("Wiki").id
 content = WikiContent.where(page_id: page_id).first
 %>
 
