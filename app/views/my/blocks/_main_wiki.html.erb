@@ -1,9 +1,14 @@
-<%  
-project_id = Project.where(identifier: "operations").first.id
-page_id = Wiki.where(project_id: project_id).first.find_page("Wiki").id
-content = WikiContent.where(page_id: page_id).first
-%>
+<h3>Main Wiki</h3><br>
+<% begin %>
+	<%
+	project_id = Project.where(identifier: "operations").first.id
+	page_id = Wiki.where(project_id: project_id).first.find_page("Wiki").id
+	content = WikiContent.where(page_id: page_id).first
+	%>
 
 
- <%= render(:partial => "wiki/content", :locals => {:content => content}) %>
+	<%= render(:partial => "wiki/content", :locals => {:content => content}) %>
 
+<% rescue => e %>
+	<%= "Wiki page couldn't be found"  %>
+<% end %>
