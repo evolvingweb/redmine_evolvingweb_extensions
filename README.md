@@ -31,3 +31,7 @@ Issues in timesheet reports are now clickable links.
 ## Broken issue description text area
 
 The upgraded plugin `redmine_wiki_extensions` breaks the layout issue. This small CSS fixes that.
+
+## Date range on hover for weekly reports
+
+Adds a title attribute to be shown on hover for the columns on a weekly spent time report.
