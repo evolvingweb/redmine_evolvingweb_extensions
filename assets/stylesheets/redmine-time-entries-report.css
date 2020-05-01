@@ -1,0 +1,8 @@
+#query_form > p .icon-reload {
+  padding-right: 10px;
+  border-right: solid 2px;
+}
+
+.criteria-remove-link {
+  margin-left: 10px;
+}
