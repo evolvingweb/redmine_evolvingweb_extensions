@@ -18,7 +18,7 @@ $(document).ready(function() {
         var criteria_text = $('#time-report th')[criteria_index].innerText;
         var replace_text = 'criteria%5B%5D=' + criteria[criteria_index];
         var url = window.location.href.replace(replace_text, '');
-        var link = '<a href="' + url + '" class="criteria-remove-link">Remove ' + criteria_text + '</a>';
+        var link = '<a href="' + url + '" class="criteria-remove-link"><span class="icon-only icon-close">Remove</span> ' + criteria_text + '</a>';
         $('#query_form > p').append(link);
       }
     }
@@ -26,12 +26,16 @@ $(document).ready(function() {
   else {
     var project_url_name = window.location.pathname.split('/')[2];
     setTimeout(function() {
-      $('select[name="v[project_id][]"] option').each(function() {
-        if ($(this).text().toLowerCase().replace(/\s/g, '-') == project_url_name) {
-          $(this).attr('selected', 'selected');
-          $('#query_form').submit();
-        }
-      });
+      if ($('input[type=hidden][name=project_id]').length) {
+        var project_id = $('input[type=hidden][name=project_id]').val();
+        $('select[name="v[project_id][]"] option').each(function() {
+          if ($(this).val() == project_id) {
+            $(this).attr('selected', 'selected');
+            $('#query_form').submit();
+            return;
+          }
+        });
+      }
     }, 100);
   }
 

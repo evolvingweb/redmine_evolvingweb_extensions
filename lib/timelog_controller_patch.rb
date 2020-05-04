@@ -1,5 +1,3 @@
-# redirects homepage to /my/home
-
 module TimelogControllerPatch
   def self.included(base) # :nodoc:
     base.send(:include, InstanceMethods)
@@ -41,10 +39,28 @@ module TimelogControllerPatch
         if !params.has_key?(:columns)
           params[:columns] = "week"
         end
+        Rails.logger.warn("PARAMS END");
+        Rails.logger.warn(params)
       end
+    end
+  end
+end
+
+module TimelogControllerReportPatch
+
+  def report
+    retrieve_time_entry_query
+    scope = time_entry_scope
+
+    @report = Redmine::Helpers::TimeReport.new(@project, @issue, params[:criteria], params[:columns], scope)
+
+    respond_to do |format|
+      format.html { render :layout => !request.xhr?, :locals => {:values => params[:v]} }
+      format.csv  { send_data(report_to_csv(@report), :type => 'text/csv; header=present', :filename => 'timelog.csv') }
     end
   end
 end
 
 # Add module to Welcome Controller
 TimelogController.send(:include, TimelogControllerPatch)
+TimelogController.prepend TimelogControllerReportPatch

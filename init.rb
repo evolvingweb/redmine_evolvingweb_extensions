@@ -1,4 +1,5 @@
 require 'redmine'
+#require 'lib/redmine/helpers/time_report'
 
 # redirects homepage to /my/home
 require_dependency "welcome_controller_patch"
