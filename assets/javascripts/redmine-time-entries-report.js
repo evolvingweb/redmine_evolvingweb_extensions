@@ -13,12 +13,14 @@ $(document).ready(function() {
   }
 
   if (criteria.length) {
-    for (criteria_index = 0; criteria_index < criteria.length; criteria_index++) {
-      var criteria_text = $('#time-report th')[criteria_index].innerText;
-      var replace_text = 'criteria%5B%5D=' + criteria[criteria_index];
-      var url = window.location.href.replace(replace_text, '');
-      var link = '<a href="' + url + '" class="criteria-remove-link">Remove ' + criteria_text + '</a>';
-      $('#query_form > p').append(link);
+    if ($('#time-report th')[criteria.length - 1]) {
+      for (criteria_index = 0; criteria_index < criteria.length; criteria_index++) {
+        var criteria_text = $('#time-report th')[criteria_index].innerText;
+        var replace_text = 'criteria%5B%5D=' + criteria[criteria_index];
+        var url = window.location.href.replace(replace_text, '');
+        var link = '<a href="' + url + '" class="criteria-remove-link">Remove ' + criteria_text + '</a>';
+        $('#query_form > p').append(link);
+      }
     }
   }
   else {
