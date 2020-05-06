@@ -6,3 +6,12 @@
 .criteria-remove-link {
   margin-left: 10px;
 }
+
+.criteria-remove-link:hover span {
+  background-image: url(/images/close_hl.png);
+}
+
+.absolute-filters {
+  float: right;
+  margin-top: 10px;
+}
