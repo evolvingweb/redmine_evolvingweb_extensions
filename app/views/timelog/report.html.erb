@@ -13,6 +13,9 @@
   <% if !project.nil? %>
     <%= hidden_field_tag 'project_id', project.id, :id => nil %>
   <% end %>
+  <% if !User.current.nil? %>
+    <%= hidden_field_tag 'user_id', User.current.id, :id => nil %>
+  <% end %>
   <%= render :partial => 'timelog/date_range' %>
 
   <p><label for='columns'><%= l(:label_details) %></label>: <%= select_tag 'columns', options_for_select([[l(:label_year), 'year'],
