@@ -35,3 +35,11 @@ The upgraded plugin `redmine_wiki_extensions` breaks the layout issue. This smal
 ## Date range on hover for weekly reports
 
 Adds a title attribute to be shown on hover for the columns on a weekly spent time report.
+
+## Changes on reports page
+
+If you land to a time entries report page for a given project you'll see the following changes vs a default installation:
+- Project is not hardcoded; instead, it's a normal filter
+- There are some predefined columns and the report is set to current month
+- Report columns are removable by clicking a link
+- There's a link to make the report "shareable" (i.e. changing relative filters to absolute)
