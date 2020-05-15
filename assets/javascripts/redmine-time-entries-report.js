@@ -18,6 +18,8 @@ $(document).ready(function() {
         var criteria_text = $('#time-report th')[criteria_index].innerText;
         var replace_text = 'criteria%5B%5D=' + criteria[criteria_index];
         var url = window.location.href.replace(replace_text, '');
+        replace_text = 'criteria[]=' + criteria[criteria_index];
+        url = window.location.href.replace(replace_text, '');
         var link = '<a href="' + url + '" class="criteria-remove-link"><span class="icon-only icon-close">Remove</span> ' + criteria_text + '</a>';
         $('#query_form > p').append(link);
       }
