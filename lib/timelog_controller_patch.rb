@@ -3,7 +3,7 @@ module TimelogControllerPatch
     base.send(:include, InstanceMethods)
 
     base.class_eval do
-      before_filter :update_filters, :only => :report
+      before_action :update_filters, :only => :report
     end
   end
 

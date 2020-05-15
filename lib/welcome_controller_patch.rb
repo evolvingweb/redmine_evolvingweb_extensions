@@ -5,7 +5,7 @@ module WelcomeControllerPatch
     base.send(:include, InstanceMethods)
 
     base.class_eval do
-      before_filter :forward_to_startpage, :only => :index
+      before_action :forward_to_startpage, :only => :index
     end
   end
 
