@@ -12,21 +12,48 @@ $(document).ready(function() {
     });
   }
 
+  function reorderColumns() {
+    var index = 0;
+    var newUrl = window.location.href;
+    var newCriteria = '';
+    $('.criteria-element').each(function() {
+      newCriteria += '&criteria%5B%5D=' + $(this).attr('data-criteria');
+      newUrl = newUrl.replace(window.originalCriteria[index], '');
+      index++;
+    });
+    if (newCriteria) {
+      newUrl += newCriteria;
+      // Cleanup url by removing &s left.
+      const search = /\&{2,}/gi;
+      newUrl = newUrl.replace(search, '&')
+      window.location.href = newUrl;
+    }
+  }
+
   if (criteria.length) {
     if ($('#time-report th')[criteria.length - 1]) {
+      var originalCriteria = [];
+      $('#query_form > p').append('<ul class="report-columns-handling"></ul>');
       for (criteria_index = 0; criteria_index < criteria.length; criteria_index++) {
         var criteria_text = $('#time-report th')[criteria_index].innerText;
         var replace_text = 'criteria%5B%5D=' + criteria[criteria_index];
         var url = window.location.href.replace(replace_text, '');
-        replace_text = 'criteria[]=' + criteria[criteria_index];
-        url = window.location.href.replace(replace_text, '');
-        var link = '<a href="' + url + '" class="criteria-remove-link"><span class="icon-only icon-close">Remove</span> ' + criteria_text + '</a>';
-        $('#query_form > p').append(link);
+        if (url === window.location.href) {
+          // Encoding was different.
+          replace_text = 'criteria[]=' + criteria[criteria_index];
+          url = window.location.href.replace(replace_text, '');
+        }
+        originalCriteria.push(replace_text);
+        var link = '<li class="criteria-element" data-criteria="' + criteria[criteria_index] + '"><a href="' + url + '" class="criteria-remove-link"><span class="icon-only icon-close">Remove</span></a>' + criteria_text + '</li>';
+        $('#query_form .report-columns-handling').append(link);
       }
     }
+    window.originalCriteria = originalCriteria;
+    $('.report-columns-handling').sortable({
+      update: reorderColumns
+    });
   }
   else {
-    var project_url_name = window.location.pathname.split('/')[2];
     setTimeout(function() {
       if ($('input[type=hidden][name=project_id]').length) {
         var project_id = $('input[type=hidden][name=project_id]').val();
@@ -176,6 +203,5 @@ $(document).ready(function() {
     $('.add-filter').parent().append('<div class="absolute-filters"><a class="absolute-filters-link" href="'+ href +'">Make filters shareable</a></div>');
   }
   makeLinksAbsolute();
-
 
 });

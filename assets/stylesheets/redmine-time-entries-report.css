@@ -15,3 +15,13 @@
   float: right;
   margin-top: 10px;
 }
+
+.report-columns-handling {
+  display: inline-block;
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.report-columns-handling li {
+  display: inline-block;
+}
