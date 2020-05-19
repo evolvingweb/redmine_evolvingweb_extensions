@@ -25,3 +25,10 @@
 .report-columns-handling li {
   display: inline-block;
 }
+
+.ui-state-highlight {
+  min-width: 50px;
+  display: inline-block;
+  height: 16px;
+  margin-left: 5px;
+}

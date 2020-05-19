@@ -50,7 +50,8 @@ $(document).ready(function() {
     }
     window.originalCriteria = originalCriteria;
     $('.report-columns-handling').sortable({
-      update: reorderColumns
+      update: reorderColumns,
+      placeholder: "ui-state-highlight"
     });
   }
   else {
