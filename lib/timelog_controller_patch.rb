@@ -37,6 +37,12 @@ module TimelogControllerPatch
         if !params.has_key?(:columns)
           params[:columns] = "week"
         end
+
+        if params.has_key?(:issue_id)
+          params[:f].insert(params[:f].length - 2, "issue_id")
+          params[:op][:issue_id] = "~"
+          params[:v][:issue_id] = [params[:issue_id][1..]]
+        end
       end
     end
   end
