@@ -31,18 +31,17 @@ module TimelogControllerPatch
           params[:v] = {} unless params.has_key?(:v)
           params[:v][:project_id] = [project_id]
         end
-        if !params.has_key?(:criteria)
-          params[:criteria] = ["project", "user", "issue"]
-        end
-        if !params.has_key?(:columns)
-          params[:columns] = "week"
-        end
-
         if params.has_key?(:issue_id)
           params[:f].insert(params[:f].length - 2, "issue_id")
           params[:op][:issue_id] = "~"
           params[:v][:issue_id] = [params[:issue_id][1..-1]]
         end
+      end
+      if !params.has_key?(:criteria)
+        params[:criteria] = ["project", "user", "issue"]
+      end
+      if !params.has_key?(:columns)
+        params[:columns] = "week"
       end
     end
   end
