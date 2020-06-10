@@ -30,6 +30,16 @@ $(document).ready(function() {
     }
   }
 
+  // Add subproject operator.
+  setTimeout(function() {
+    if ($("#operators_project_id").length) {
+      $("#operators_project_id").append("<option value='=*'>is or subproject</option>");
+      if (!urlParams.get('op[project_id]') || urlParams.get('op[project_id]') === '=*') {
+        $('#operators_project_id').val('=*');
+      }
+    }
+  }, 100);
+
   if (criteria.length) {
     if ($('#time-report th')[criteria.length - 1]) {
       var originalCriteria = [];

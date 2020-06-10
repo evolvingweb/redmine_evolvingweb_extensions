@@ -24,7 +24,7 @@ module TimelogControllerPatch
             spent_on_added = true
           end
           params[:op] = {} unless params.has_key?(:op)
-          params[:op][:project_id] = "="
+          params[:op][:project_id] = "=*"
           if spent_on_added
             params[:op][:spent_on] = "m"
           end
