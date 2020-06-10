@@ -32,3 +32,15 @@
   height: 16px;
   margin-left: 5px;
 }
+
+table#time-report tbody tr.subtotal td {
+  padding-top: 9px;
+  padding-bottom: 9px;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  font-weight: bold;
+  font-style: normal;
+}
+table#time-report tbody tr.subtotal td.hours {
+  color: #666;
+}
