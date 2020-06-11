@@ -2,6 +2,7 @@ $(document).ready(function() {
   const urlParams = new URLSearchParams(window.location.search);
   const criteria = urlParams.getAll('criteria[]');
 
+  // Week title attribute.
   if ($('#columns option:selected').val() == 'week') {
     $('th.period').each(function() {
       const week = $(this).text();
@@ -12,6 +13,7 @@ $(document).ready(function() {
     });
   }
 
+  // Reorder columns callback.
   function reorderColumns() {
     var index = 0;
     var newUrl = window.location.href;
