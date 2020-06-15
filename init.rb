@@ -7,6 +7,7 @@ require_dependency "timelog_report_patch"
 require_dependency "evolvingweb_extensions/hooks"
 require_dependency "editor_style_patch"
 require_dependency "timelog_controller_patch"
+require_dependency "query_model_patch"
 
 Redmine::Plugin.register :redmine_evolvingweb_extensions do
   name 'Redmine Evolving Web Extensions'
