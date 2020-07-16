@@ -21,7 +21,6 @@ $(document).ready(function() {
         });
     }, 500);
     $('.jstTabs > ul > li:nth-of-type(2)').click(function() {
-        console.log('Clicked preview tab');
         setTimeout(function() {
             $('.wiki-preview img').each(function() {
                 processImage($(this));
