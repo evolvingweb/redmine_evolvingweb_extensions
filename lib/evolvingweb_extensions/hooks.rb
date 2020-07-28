@@ -2,7 +2,7 @@ module EvolvingwebExtensions
   class JSTimelogReportHooks < Redmine::Hook::ViewListener
     def view_layouts_base_html_head(context={})
       p = context[:request].params
-      if p[:controller] == "timelog" && p[:action] == "report"
+      if p[:controller] == "timelog"
         js_files = %w{moment.min.js redmine-time-entries-report.js}
         js_files.map do |file|
           javascript_include_tag(file, :plugin=> 'redmine_evolvingweb_extensions')
@@ -24,7 +24,7 @@ module EvolvingwebExtensions
   class CSSHooks < Redmine::Hook::ViewListener
     def view_layouts_base_html_head(context={})
       p = context[:request].params
-      if p[:controller] == "timelog" && p[:action] == "report"
+      if p[:controller] == "timelog"
         css_files = %w{redmine-time-entries-report.css}
         css_files.map do |file|
           stylesheet_link_tag(file, :plugin=> 'redmine_evolvingweb_extensions')
