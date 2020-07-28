@@ -47,6 +47,9 @@ $(document).ready(function() {
       var originalCriteria = [];
       $('#query_form > p').append('<ul class="report-columns-handling"></ul>');
       for (criteria_index = 0; criteria_index < criteria.length; criteria_index++) {
+        if (!criteria[criteria_index]) {
+          continue;
+        }
         var criteria_text = $('#time-report th')[criteria_index].innerText;
         var replace_text = 'criteria%5B%5D=' + criteria[criteria_index];
         var url = window.location.href.replace(replace_text, '');
