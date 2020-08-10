@@ -32,7 +32,7 @@ module TimelogControllerPatch
           params[:op][:issue_id] = "~"
           params[:v][:issue_id] = [params[:issue_id][1..-1]]
           params[:criteria] = ["user"]
-        else
+        elsif (!params[:f].include?("spent_on"))
           params[:f] << "spent_on"
           params[:op][:spent_on] = "m"
         end
