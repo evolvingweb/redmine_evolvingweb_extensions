@@ -46,11 +46,12 @@ $(document).ready(function() {
     if ($('#time-report th')[criteria.length - 1]) {
       var originalCriteria = [];
       $('#query_form > p').append('<ul class="report-columns-handling"></ul>');
+      var criteria_text_index = 0;
       for (criteria_index = 0; criteria_index < criteria.length; criteria_index++) {
         if (!criteria[criteria_index]) {
           continue;
         }
-        var criteria_text = $('#time-report th')[criteria_index].innerText;
+        var criteria_text = $('#time-report th')[criteria_text_index].innerText;
         var replace_text = 'criteria%5B%5D=' + criteria[criteria_index];
         var url = window.location.href.replace(replace_text, '');
         if (url === window.location.href) {
@@ -61,6 +62,7 @@ $(document).ready(function() {
         originalCriteria.push(replace_text);
         var link = '<li class="criteria-element" data-criteria="' + criteria[criteria_index] + '"><a href="' + url + '" class="criteria-remove-link"><span class="icon-only icon-close">Remove</span></a>' + criteria_text + '</li>';
         $('#query_form .report-columns-handling').append(link);
+        criteria_text_index++;
       }
     }
     window.originalCriteria = originalCriteria;
