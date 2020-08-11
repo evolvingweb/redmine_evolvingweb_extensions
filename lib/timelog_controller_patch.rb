@@ -13,28 +13,28 @@ module TimelogControllerPatch
         project_id = @project.id
         params.delete(:project_id)
         params[:f] = [] unless params.has_key?(:f)
-        spent_on_added = false
         if (!params[:f].include?("project_id"))
           if (params[:f].length > 0)
             params[:f].insert(params[:f].length - 2, "project_id")
           else
-            params[:f] << "project_id"
-            params[:f] << "spent_on"
-            params[:f] << ""
-            spent_on_added = true
+            unless params.has_key?(:issue_id)
+              params[:f] << "project_id"
+            end
           end
           params[:op] = {} unless params.has_key?(:op)
           params[:op][:project_id] = "=*"
-          if spent_on_added
-            params[:op][:spent_on] = "m"
-          end
+
           params[:v] = {} unless params.has_key?(:v)
           params[:v][:project_id] = [project_id]
         end
         if params.has_key?(:issue_id)
-          params[:f].insert(params[:f].length - 2, "issue_id")
+          params[:f] << "issue_id"
           params[:op][:issue_id] = "~"
           params[:v][:issue_id] = [params[:issue_id][1..-1]]
+          params[:criteria] = ["user"]
+        elsif (!params[:f].include?("spent_on"))
+          params[:f] << "spent_on"
+          params[:op][:spent_on] = "m"
         end
       end
       if !params.has_key?(:criteria)
