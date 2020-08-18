@@ -19,12 +19,12 @@ $(document).ready(function() {
         $('.tab-content .has-details .wiki img, .description .wiki img').each(function() {
             processImage($(this));
         });
-    }, 500);
+    }, 1000);
     $('.jstTabs > ul > li:nth-of-type(2)').click(function() {
         setTimeout(function() {
             $('.wiki-preview img').each(function() {
                 processImage($(this));
             })
-        }, 500);
+        }, 1000);
     });
 });
