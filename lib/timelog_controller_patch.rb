@@ -26,15 +26,16 @@ module TimelogControllerPatch
 
           params[:v] = {} unless params.has_key?(:v)
           params[:v][:project_id] = [project_id]
+          if (!params[:f].include?("spent_on"))
+            params[:f] << "spent_on"
+            params[:op][:spent_on] = "m"
+          end
         end
         if params.has_key?(:issue_id)
           params[:f] << "issue_id"
           params[:op][:issue_id] = "~"
           params[:v][:issue_id] = [params[:issue_id][1..-1]]
           params[:criteria] = ["user"]
-        elsif (!params[:f].include?("spent_on"))
-          params[:f] << "spent_on"
-          params[:op][:spent_on] = "m"
         end
       end
       if !params.has_key?(:criteria)
