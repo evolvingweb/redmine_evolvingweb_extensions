@@ -1,6 +1,11 @@
 $(document).ready(function() {
   const urlParams = new URLSearchParams(window.location.search);
-  const criteria = urlParams.getAll('criteria[]');
+  var criteria = urlParams.getAll('criteria[]');
+  if (criteria.length === 0 && $("input[name='criteria[]']").length) {
+    $("input[name='criteria[]']").each(function() {
+      criteria.push($(this).val());
+    });
+  }
 
   // Week title attribute.
   if ($('#columns option:selected').val() == 'week') {
