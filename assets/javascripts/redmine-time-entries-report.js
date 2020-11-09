@@ -1,10 +1,24 @@
 $(document).ready(function() {
   const urlParams = new URLSearchParams(window.location.search);
   var criteria = urlParams.getAll('criteria[]');
+  // If urlParams are not set it's the first load of the page.
   if (criteria.length === 0 && $("input[name='criteria[]']").length) {
     $("input[name='criteria[]']").each(function() {
       criteria.push($(this).val());
     });
+    // If it's the first page load, use project_id hidden field.
+    setTimeout(function() {
+      if ($('input[type=hidden][name=project_id]').length) {
+        var project_id = $('input[type=hidden][name=project_id]').val();
+        $('select[name="v[project_id][]"] option').each(function() {
+          if ($(this).val() == project_id) {
+            $(this).attr('selected', 'selected');
+            $('#query_form').submit();
+            return;
+          }
+        });
+      }
+    }, 100);
   }
 
   // Week title attribute.
@@ -75,20 +89,6 @@ $(document).ready(function() {
       update: reorderColumns,
       placeholder: "ui-state-highlight"
     });
-  }
-  else {
-    setTimeout(function() {
-      if ($('input[type=hidden][name=project_id]').length) {
-        var project_id = $('input[type=hidden][name=project_id]').val();
-        $('select[name="v[project_id][]"] option').each(function() {
-          if ($(this).val() == project_id) {
-            $(this).attr('selected', 'selected');
-            $('#query_form').submit();
-            return;
-          }
-        });
-      }
-    }, 100);
   }
 
   /**
