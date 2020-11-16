@@ -9,7 +9,7 @@
         <label for="import_settings[unique_id][field]">Import Unique ID</label>
         <select name="import_settings[unique_id][field]" id="import_unique_id">
           <% @custom_fields.each do |field| %>
-            <option value="<%= field.id %>%"><%= field.name %></option>
+            <option value="<%= field.id %>"><%= field.name %></option>
           <% end %>
         </select>
       </p>
