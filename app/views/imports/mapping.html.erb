@@ -6,16 +6,16 @@
     <fieldset class="box">
     <legend>Import Unique ID</legend>
       <p>
-        <label for="import_unique_id">Import Unique ID</label>
-        <select name="import_unique_id" id="import_unique_id">
+        <label for="import_settings[unique_id][field]">Import Unique ID</label>
+        <select name="import_settings[unique_id][field]" id="import_unique_id">
           <% @custom_fields.each do |field| %>
             <option value="<%= field.id %>%"><%= field.name %></option>
           <% end %>
         </select>
       </p>
       <p>
-        <label for="import_update_existing">Update existing issue if found</label>
-        <input type="checkbox" name="import_update_existing" id="import_update_existing"/>
+        <label for="import_settings[unique_id][update]">Update existing issue if found</label>
+        <input type="checkbox" name="import_settings[unique_id][update]" id="import_update_existing"/>
       </p>
     </fieldset>
 
