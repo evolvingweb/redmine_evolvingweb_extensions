@@ -6,7 +6,8 @@ module IssueImportPatch
   def build_object(row, item)
     field_name = "cf_#{settings["unique_id"]["field"]}"
     unique_id = row_value(row, field_name)
-    update = settings["unique_id"]["update"]
+    #update = settings["unique_id"]["update"]
+    update = 'off'
     issue = super
     issues = Issue.find_by_sql(["
       SELECT * FROM issues i
