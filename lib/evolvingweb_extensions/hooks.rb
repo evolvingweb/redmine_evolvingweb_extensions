@@ -7,6 +7,12 @@ module EvolvingwebExtensions
         js_files.map do |file|
           javascript_include_tag(file, :plugin=> 'redmine_evolvingweb_extensions')
         end
+        if p[:action] == "report"
+          js_files = %w{time-report-sort.js}
+          js_files.map do |file|
+            javascript_include_tag(file, :plugin=> 'redmine_evolvingweb_extensions')
+          end
+        end
       end
     end
   end
