@@ -59,14 +59,16 @@ const buildTotalLastLevelRows = function() {
     let items = [];
     rows.forEach(function(row){
       let $topSubtotalFound = false;
-      items.forEach(function(item) {
-        if (item.item.isSameNode(row.topSubtotal[0])) {
-          $topSubtotalFound = item;
-          return;
-        }
-      });
+      if (row.topSubtotal != null) {
+        items.forEach(function(item) {
+          if (item.item.isSameNode(row.topSubtotal[0])) {
+            $topSubtotalFound = item;
+            return;
+          }
+        });
+      }
 
-      if (!$topSubtotalFound) {
+      if (!$topSubtotalFound && row.topSubtotal != null) {
         $topSubtotalFound = {
           item: row.topSubtotal[0],
           childrenItems: []
@@ -74,20 +76,39 @@ const buildTotalLastLevelRows = function() {
         items.push($topSubtotalFound);
       }
 
-      $parentSubtotal = false;
-      $topSubtotalFound.childrenItems.forEach(function(item) {
-        if (item.item.isSameNode(row.parentSubtotal[0])) {
-          $parentSubtotal = item
-          return;
-        }
-      });
+      if ($topSubtotalFound) {
+        $parentSubtotal = false;
+        $topSubtotalFound.childrenItems.forEach(function(item) {
+          if (item.item.isSameNode(row.parentSubtotal[0])) {
+            $parentSubtotal = item
+            return;
+          }
+        });
 
-      if (!$parentSubtotal) {
-        $parentSubtotal = {
-          item: row.parentSubtotal[0],
-          childrenItems: []
-        };
-        $topSubtotalFound.childrenItems.push($parentSubtotal);
+        if (!$parentSubtotal) {
+          $parentSubtotal = {
+            item: row.parentSubtotal[0],
+            childrenItems: []
+          };
+          $topSubtotalFound.childrenItems.push($parentSubtotal);
+        }
+      }
+      else {
+        $parentSubtotal = false;
+        items.forEach(function(item) {
+          if (item.item.isSameNode(row.parentSubtotal[0])) {
+            $parentSubtotal = item
+            return;
+          }
+        });
+
+        if (!$parentSubtotal) {
+          $parentSubtotal = {
+            item: row.parentSubtotal[0],
+            childrenItems: []
+          };
+          items.push($parentSubtotal);
+        }
       }
       $parentSubtotal.childrenItems.push({
         item: row.row[0]
