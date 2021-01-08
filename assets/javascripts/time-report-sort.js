@@ -33,8 +33,28 @@ const buildTotalLastLevelRows = function() {
 
     });
     window.totalLastLevelRows = lastLevelRows;
+    window.originalLastLevelRows = cloneRowsArray(lastLevelRows);
+
+    console.log(window.totalLastLevelRows, 'TLLR');
+    console.log(window.originalLastLevelRows, 'OLLR');
+
   }
   return window.totalLastLevelRows;
+};
+
+const cloneRowsArray = function(items) {
+  let newArray = [];
+  for (var index = 0; index < items.length; index++) {
+    newArray[index] = JSON.parse(JSON.stringify(items[index]));
+    newArray[index].row = items[index].row.clone();
+    if (items[index].parentSubtotal) {
+      newArray[index].parentSubtotal = items[index].parentSubtotal.clone();
+    }
+    if (items[index].topSubtotal) {
+      newArray[index].topSubtotal = items[index].topSubtotal.clone();
+    }
+  }
+  return newArray;
 };
 
 const buildPositionLastLevelRows = function(position) {
@@ -103,7 +123,7 @@ const restructureTable = function(rows) {
     let $topSubtotalFound = false;
     if (row.topSubtotal != null) {
       items.forEach(function(item) {
-        if (item.item.isSameNode(row.topSubtotal[0])) {
+        if (item.item.isEqualNode(row.topSubtotal[0])) {
           $topSubtotalFound = item;
           return;
         }
@@ -121,7 +141,7 @@ const restructureTable = function(rows) {
     if ($topSubtotalFound) {
       $parentSubtotal = false;
       $topSubtotalFound.childrenItems.forEach(function(item) {
-        if (item.item.isSameNode(row.parentSubtotal[0])) {
+        if (item.item.isEqualNode(row.parentSubtotal[0])) {
           $parentSubtotal = item
           return;
         }
@@ -138,7 +158,7 @@ const restructureTable = function(rows) {
     else {
       $parentSubtotal = false;
       items.forEach(function(item) {
-        if (item.item.isSameNode(row.parentSubtotal[0])) {
+        if (item.item.isEqualNode(row.parentSubtotal[0])) {
           $parentSubtotal = item
           return;
         }
@@ -224,6 +244,14 @@ $(document).ready(function() {
     $('.sort-handler').attr('data-sort-direction', 'false');
     if (currentDirection === 'DESC') {
       currentDirection = 'ASC';
+    }
+    else if (currentDirection === 'ASC') {
+      // Set back to default.
+      buildTotalLastLevelRows();
+      lastLevelRows = window.originalLastLevelRows;
+      rebuildTable(lastLevelRows);
+      $('.sort-indicator').remove();
+      return;
     }
     else {
       currentDirection = 'DESC';
