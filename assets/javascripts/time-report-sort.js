@@ -18,12 +18,18 @@ const buildTotalLastLevelRows = function() {
       // Build parentSubtotals.
       $previousElement = $(this);
       while ($previousElement = $previousElement.prev()) {
-        if ($previousElement.hasClass('subtotal')) {
-          firstSubtotalFound = true;
-          row['parentSubtotal'] = $previousElement;
-          if ($previousElement.prevAll('.subtotal-top').length) {
-            row['topSubtotal'] = $previousElement.prevAll('.subtotal-top');
+        if ($previousElement.length) {
+          if ($previousElement.hasClass('subtotal')) {
+            firstSubtotalFound = true;
+            row['parentSubtotal'] = $previousElement;
+            if ($previousElement.prevAll('.subtotal-top').length) {
+              row['topSubtotal'] = $previousElement.prevAll('.subtotal-top');
+            }
+            break;
           }
+        }
+        else {
+          // No more elements, break the loop.
           break;
         }
       }
@@ -34,9 +40,6 @@ const buildTotalLastLevelRows = function() {
     });
     window.totalLastLevelRows = lastLevelRows;
     window.originalLastLevelRows = cloneRowsArray(lastLevelRows);
-
-    console.log(window.totalLastLevelRows, 'TLLR');
-    console.log(window.originalLastLevelRows, 'OLLR');
 
   }
   return window.totalLastLevelRows;
@@ -79,12 +82,17 @@ const buildPositionLastLevelRows = function(position) {
       // Build parentSubtotals.
       $previousElement = $(this);
       while ($previousElement = $previousElement.prev()) {
-        if ($previousElement.hasClass('subtotal')) {
-          firstSubtotalFound = true;
-          row['parentSubtotal'] = $previousElement;
-          if ($previousElement.prevAll('.subtotal-top').length) {
-            row['topSubtotal'] = $previousElement.prevAll('.subtotal-top');
+        if ($previousElement.length) {
+          if ($previousElement.hasClass('subtotal')) {
+            firstSubtotalFound = true;
+            row['parentSubtotal'] = $previousElement;
+            if ($previousElement.prevAll('.subtotal-top').length) {
+              row['topSubtotal'] = $previousElement.prevAll('.subtotal-top');
+            }
+            break;
           }
+        }
+        else {
           break;
         }
       }
@@ -93,8 +101,12 @@ const buildPositionLastLevelRows = function(position) {
       lastLevelRows.push(row);
 
     });
-    window.buildPositionLastLevelRows = {};
+    if (!window.buildPositionLastLevelRows) {
+      window.buildPositionLastLevelRows = {};
+
+    }
     window.buildPositionLastLevelRows[position] = lastLevelRows;
+
   }
   return window.buildPositionLastLevelRows[position];
 };
@@ -158,23 +170,34 @@ const restructureTable = function(rows) {
     else {
       $parentSubtotal = false;
       items.forEach(function(item) {
-        if (item.item.isEqualNode(row.parentSubtotal[0])) {
-          $parentSubtotal = item
-          return;
+        if (row.parentSubtotal) {
+          if (item.item.isEqualNode(row.parentSubtotal[0])) {
+            $parentSubtotal = item
+            return;
+          }
         }
       });
-
-      if (!$parentSubtotal) {
-        $parentSubtotal = {
-          item: row.parentSubtotal[0],
-          childrenItems: []
-        };
-        items.push($parentSubtotal);
+      if (row.parentSubtotal) {
+        if (!$parentSubtotal) {
+          $parentSubtotal = {
+            item: row.parentSubtotal[0],
+            childrenItems: []
+          };
+          items.push($parentSubtotal);
+        }
       }
     }
-    $parentSubtotal.childrenItems.push({
-      item: row.row[0]
-    });
+    if ($parentSubtotal) {
+      $parentSubtotal.childrenItems.push({
+        item: row.row[0]
+      });
+    }
+    else {
+      items.push({
+        item: row.row[0],
+        childrenItems: []
+      });
+    }
   });
   return items;
 };
@@ -247,7 +270,6 @@ $(document).ready(function() {
     }
     else if (currentDirection === 'ASC') {
       // Set back to default.
-      buildTotalLastLevelRows();
       lastLevelRows = window.originalLastLevelRows;
       rebuildTable(lastLevelRows);
       $('.sort-indicator').remove();
@@ -274,5 +296,6 @@ $(document).ready(function() {
       sortTableBy('period', currentDirection, columnIndex);
     }
   });
+  buildTotalLastLevelRows();
 
 });
