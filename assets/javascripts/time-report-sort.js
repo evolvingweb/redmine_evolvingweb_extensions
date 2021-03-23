@@ -45,6 +45,7 @@ const buildTotalLastLevelRows = function() {
   return window.totalLastLevelRows;
 };
 
+// Clone rows array to avoid changing it in later code.
 const cloneRowsArray = function(items) {
   let newArray = [];
   for (var index = 0; index < items.length; index++) {
@@ -60,6 +61,7 @@ const cloneRowsArray = function(items) {
   return newArray;
 };
 
+// Build last level rows array for a given period column (not total).
 const buildPositionLastLevelRows = function(position) {
   if (!window.buildPositionLastLevelRows || !window.buildPositionLastLevelRows[position]) {
     let lastLevelRows = [];
@@ -111,6 +113,7 @@ const buildPositionLastLevelRows = function(position) {
   return window.buildPositionLastLevelRows[position];
 };
 
+// Rebuild table with given rows (already sorted).
 const rebuildTable = function(rows) {
   let items = restructureTable(rows);
   let $newTbody = $('<tbody></tbody>');
@@ -120,6 +123,7 @@ const rebuildTable = function(rows) {
   $('table.list').append($newTbody);
 };
 
+// Flat rows structure.
 const flatItems = function(items, $tbody = null) {
   items.forEach(function(item) {
     $tbody.append(item.item);
@@ -129,6 +133,7 @@ const flatItems = function(items, $tbody = null) {
   });
 };
 
+// Restructure table from rows to hierarchical structure.
 const restructureTable = function(rows) {
   let items = [];
   rows.forEach(function(row){
@@ -202,6 +207,7 @@ const restructureTable = function(rows) {
   return items;
 };
 
+// Sort given table either by total or a specific column.
 const sortTableBy = function (sortType, sortDirection, sortIndex = 0) {
   if (sortType === 'total') {
     let lastLevelRows = buildTotalLastLevelRows();
@@ -215,6 +221,7 @@ const sortTableBy = function (sortType, sortDirection, sortIndex = 0) {
   }
 };
 
+// Sort given rows in the given direction using the time index.
 const sortRows = function(rows, direction = 'DESC') {
   if (direction === 'ASC') {
     rows.sort(function(a, b) {
@@ -253,6 +260,7 @@ $(document).ready(function() {
     });
   });
 
+  // Set the sort handlers.
   $('thead .period, thead .total').each(function() {
     const contents = $(this).html();
     let newContent = $('<a class="sort-handler" href="#" data-sort="false" data-sort-direction="false"></a>');
@@ -296,6 +304,8 @@ $(document).ready(function() {
       sortTableBy('period', currentDirection, columnIndex);
     }
   });
+
+  // Build total last level rows when everything is ready so that original total rows is preserved.
   buildTotalLastLevelRows();
 
 });
