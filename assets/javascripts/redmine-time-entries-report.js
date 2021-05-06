@@ -1,13 +1,21 @@
 $(document).ready(function() {
   const urlParams = new URLSearchParams(window.location.search);
   var criteria = urlParams.getAll('criteria[]');
-  // If urlParams are not set it's the first load of the page.
-  if (criteria.length === 0 && $("input[name='criteria[]']").length) {
-    $("input[name='criteria[]']").each(function() {
-      criteria.push($(this).val());
-    });
-    // If it's the first page load, use project_id hidden field.
-    setTimeout(function() {
+
+  setTimeout(function() {
+    // Add subproject operator.
+    if ($("#operators_project_id").length) {
+      $("#operators_project_id").append("<option value='=*'>is or subproject</option>");
+      if (!urlParams.get('op[project_id]') || urlParams.get('op[project_id]') === '=*') {
+        $('#operators_project_id').val('=*');
+      }
+    }
+    // If urlParams are not set it's the first load of the page.
+    if (criteria.length === 0 && $("input[name='criteria[]']").length) {
+      $("input[name='criteria[]']").each(function() {
+        criteria.push($(this).val());
+      });
+      // Use project_id hidden field if it's the first page load.
       if ($('input[type=hidden][name=project_id]').length) {
         var project_id = $('input[type=hidden][name=project_id]').val();
         $('select[name="v[project_id][]"] option').each(function() {
@@ -18,8 +26,8 @@ $(document).ready(function() {
           }
         });
       }
-    }, 100);
-  }
+    }
+  }, 100);
 
   // Week title attribute.
   if ($('#columns option:selected').val() == 'week') {
@@ -50,16 +58,6 @@ $(document).ready(function() {
       window.location.href = newUrl;
     }
   }
-
-  // Add subproject operator.
-  setTimeout(function() {
-    if ($("#operators_project_id").length) {
-      $("#operators_project_id").append("<option value='=*'>is or subproject</option>");
-      if (!urlParams.get('op[project_id]') || urlParams.get('op[project_id]') === '=*') {
-        $('#operators_project_id').val('=*');
-      }
-    }
-  }, 100);
 
   if (criteria.length) {
     if ($('#time-report th')[criteria.length - 1]) {
