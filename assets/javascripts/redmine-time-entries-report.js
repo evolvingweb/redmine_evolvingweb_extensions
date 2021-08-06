@@ -1,4 +1,14 @@
 $(document).ready(function() {
+  // Add subproject operator.
+  setTimeout(function() {
+    if ($("#operators_project_id").length) {
+      $("#operators_project_id").append("<option value='=*'>is or subproject</option>");
+      if (!urlParams.get('op[project_id]') || urlParams.get('op[project_id]') === '=*') {
+        $('#operators_project_id').val('=*');
+      }
+    }
+  }, 50);
+
   const urlParams = new URLSearchParams(window.location.search);
   var criteria = urlParams.getAll('criteria[]');
   // If urlParams are not set it's the first load of the page.
@@ -13,10 +23,16 @@ $(document).ready(function() {
         $('select[name="v[project_id][]"] option').each(function() {
           if ($(this).val() == project_id) {
             $(this).attr('selected', 'selected');
-            $('#query_form').submit();
             return;
           }
         });
+        $('select[name="op[project_id]"] option').each(function() {
+          if ($(this).val() == '=*') {
+            $(this).attr('selected', 'selected');
+            return;
+          }
+        });
+        $('#query_form').submit();
       }
     }, 100);
   }
@@ -50,16 +66,6 @@ $(document).ready(function() {
       window.location.href = newUrl;
     }
   }
-
-  // Add subproject operator.
-  setTimeout(function() {
-    if ($("#operators_project_id").length) {
-      $("#operators_project_id").append("<option value='=*'>is or subproject</option>");
-      if (!urlParams.get('op[project_id]') || urlParams.get('op[project_id]') === '=*') {
-        $('#operators_project_id').val('=*');
-      }
-    }
-  }, 100);
 
   if (criteria.length) {
     if ($('#time-report th')[criteria.length - 1]) {
