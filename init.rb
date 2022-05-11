@@ -9,6 +9,8 @@ require_dependency "editor_style_patch"
 require_dependency "timelog_controller_patch"
 require_dependency "query_model_patch"
 require_dependency "issue_import_patch"
+require_dependency "time_entry_query_model_patch"
+require_dependency "query_custom_field_column_model_patch"
 
 
 Redmine::Plugin.register :redmine_evolvingweb_extensions do
