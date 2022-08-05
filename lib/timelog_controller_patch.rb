@@ -39,7 +39,8 @@ module TimelogControllerPatch
         end
       end
       if !params.has_key?(:criteria)
-        params[:criteria] = ["project", "user", "issue"]
+        # cf_18 is User Department Custom Field.
+        params[:criteria] = ["project", "cf_18", "user"]
       end
       if !params.has_key?(:columns)
         params[:columns] = "week"
