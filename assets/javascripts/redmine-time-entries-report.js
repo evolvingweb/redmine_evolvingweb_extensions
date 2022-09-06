@@ -61,6 +61,23 @@ $(document).ready(function() {
     }
   }, 100);
 
+  // Add tlm operator.
+  setTimeout(function() {
+    if ($("#operators_spent_on").length) {
+      var threeToEnd = $('#operators_spent_on option').length - 4;
+      $('#operators_spent_on option:nth(' + threeToEnd+ ')').after("<option value='tlm'>this month and last month</option>");
+      if (urlParams.get('op[spent_on]') === 'tlm') {
+        $('#operators_spent_on').val('tlm');
+        enableValues('spent_on', []);
+      }
+      $("#operators_spent_on").change(function() {
+        if ($(this).val() === 'tlm') {
+          enableValues('spent_on', []);
+        }
+      });
+    }
+  }, 100);
+
   if (criteria.length) {
     if ($('#time-report th')[criteria.length - 1]) {
       var originalCriteria = [];
@@ -205,6 +222,14 @@ $(document).ready(function() {
               var toReplace = 'v[spent_on][]=' + startDayFormatted + '&v[spent_on][]=' + endDayFormatted;
               queryParams = queryParams.replace('op[spent_on]=y', 'op[spent_on]=' + newOp + "&" + toReplace);
               break;
+
+              case 'tlm':
+                var newOp = '><';
+                var startDayFormatted = moment().subtract(1, 'months').startOf('month').format(format);
+                var endDayFormatted = moment().endOf('month').format(format)
+                var toReplace = 'v[spent_on][]=' + startDayFormatted + '&v[spent_on][]=' + endDayFormatted;
+                queryParams = queryParams.replace('op[spent_on]=tlm', 'op[spent_on]=' + newOp + "&" + toReplace);
+                break;
           }
           break;
 
