@@ -20,8 +20,8 @@ module EvolvingWebExtensions
             column.sortable = "#{Issue.table_name}.parent_id, #{Issue.table_name}.lft"
           end
         end
-        Rails.logger.warn("columns!")
-        Rails.logger.warn(@available_columns)
+        Rails.logger.debug("columns!")
+        Rails.logger.debug(@available_columns)
         @available_columns
       end
     end
