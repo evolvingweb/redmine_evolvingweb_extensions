@@ -1,4 +1,4 @@
-module EvolvingWebExtensions
+module EvolvingwebExtensions
   module ChangesetLinkCreator
     def self.create_link (changeset)
       repository_url = changeset.repository.clone_url

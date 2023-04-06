@@ -1,5 +1,5 @@
 
-module EvolvingWebExtensions
+module EvolvingwebExtensions
   module IssueQueryPatch
 
     def self.included(base) # :nodoc:

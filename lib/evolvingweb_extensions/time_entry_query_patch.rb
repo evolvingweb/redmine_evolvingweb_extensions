@@ -1,5 +1,5 @@
 
-module EvolvingWebExtensions
+module EvolvingwebExtensions
   module TimeEntryQueryPatch
 
     def self.included(base) # :nodoc:
