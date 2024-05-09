@@ -57,7 +57,7 @@ module TimelogControllerReportPatch
     retrieve_time_entry_query
     scope = time_entry_scope
 
-    @report = Redmine::Helpers::TimeReport.new(nil, @issue, params[:criteria], params[:columns], scope)
+    @report = Redmine::Helpers::TimeReport.new(nil, params[:criteria], params[:columns], scope)
 
     respond_to do |format|
       format.html { render :layout => !request.xhr?, :locals => {:values => params[:v], :project => project_copy} }

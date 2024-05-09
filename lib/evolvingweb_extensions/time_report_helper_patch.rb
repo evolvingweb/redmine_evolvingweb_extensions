@@ -1,5 +1,5 @@
 
-module EvolvingWebExtensions
+module EvolvingwebExtensions
     module TimeReportHelperPatch
 
       def self.included(base) # :nodoc:
