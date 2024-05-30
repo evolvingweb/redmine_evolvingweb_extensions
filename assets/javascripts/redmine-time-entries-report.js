@@ -203,6 +203,14 @@ $(document).ready(function() {
               var toReplace = 'v[spent_on][]=' + startDayFormatted + '&v[spent_on][]=' + endDayFormatted;
               queryParams = queryParams.replace('op[spent_on]=y', 'op[spent_on]=' + newOp + "&" + toReplace);
               break;
+
+              case 'tlm':
+                var newOp = '><';
+                var startDayFormatted = moment().subtract(1, 'months').startOf('month').format(format);
+                var endDayFormatted = moment().endOf('month').format(format)
+                var toReplace = 'v[spent_on][]=' + startDayFormatted + '&v[spent_on][]=' + endDayFormatted;
+                queryParams = queryParams.replace('op[spent_on]=tlm', 'op[spent_on]=' + newOp + "&" + toReplace);
+                break;
           }
           break;
 

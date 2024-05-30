@@ -39,7 +39,8 @@ module TimelogControllerPatch
         end
       end
       if !params.has_key?(:criteria)
-        params[:criteria] = ["project", "user", "issue"]
+        # cf_18 is User Department Custom Field.
+        params[:criteria] = ["project", "cf_18", "user"]
       end
       if !params.has_key?(:columns)
         params[:columns] = "week"
@@ -56,7 +57,7 @@ module TimelogControllerReportPatch
     retrieve_time_entry_query
     scope = time_entry_scope
 
-    @report = Redmine::Helpers::TimeReport.new(nil, @issue, params[:criteria], params[:columns], scope)
+    @report = Redmine::Helpers::TimeReport.new(nil, params[:criteria], params[:columns], scope)
 
     respond_to do |format|
       format.html { render :layout => !request.xhr?, :locals => {:values => params[:v], :project => project_copy} }

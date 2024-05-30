@@ -18,12 +18,18 @@ const buildTotalLastLevelRows = function() {
       // Build parentSubtotals.
       $previousElement = $(this);
       while ($previousElement = $previousElement.prev()) {
-        if ($previousElement.hasClass('subtotal')) {
-          firstSubtotalFound = true;
-          row['parentSubtotal'] = $previousElement;
-          if ($previousElement.prevAll('.subtotal-top').length) {
-            row['topSubtotal'] = $previousElement.prevAll('.subtotal-top');
+        if ($previousElement.length) {
+          if ($previousElement.hasClass('subtotal')) {
+            firstSubtotalFound = true;
+            row['parentSubtotal'] = $previousElement;
+            if ($previousElement.prevAll('.subtotal-top').length) {
+              row['topSubtotal'] = $previousElement.prevAll('.subtotal-top');
+            }
+            break;
           }
+        }
+        else {
+          // No more elements, break the loop.
           break;
         }
       }
@@ -35,13 +41,11 @@ const buildTotalLastLevelRows = function() {
     window.totalLastLevelRows = lastLevelRows;
     window.originalLastLevelRows = cloneRowsArray(lastLevelRows);
 
-    console.log(window.totalLastLevelRows, 'TLLR');
-    console.log(window.originalLastLevelRows, 'OLLR');
-
   }
   return window.totalLastLevelRows;
 };
 
+// Clone rows array to avoid changing it in later code.
 const cloneRowsArray = function(items) {
   let newArray = [];
   for (var index = 0; index < items.length; index++) {
@@ -57,6 +61,7 @@ const cloneRowsArray = function(items) {
   return newArray;
 };
 
+// Build last level rows array for a given period column (not total).
 const buildPositionLastLevelRows = function(position) {
   if (!window.buildPositionLastLevelRows || !window.buildPositionLastLevelRows[position]) {
     let lastLevelRows = [];
@@ -79,12 +84,17 @@ const buildPositionLastLevelRows = function(position) {
       // Build parentSubtotals.
       $previousElement = $(this);
       while ($previousElement = $previousElement.prev()) {
-        if ($previousElement.hasClass('subtotal')) {
-          firstSubtotalFound = true;
-          row['parentSubtotal'] = $previousElement;
-          if ($previousElement.prevAll('.subtotal-top').length) {
-            row['topSubtotal'] = $previousElement.prevAll('.subtotal-top');
+        if ($previousElement.length) {
+          if ($previousElement.hasClass('subtotal')) {
+            firstSubtotalFound = true;
+            row['parentSubtotal'] = $previousElement;
+            if ($previousElement.prevAll('.subtotal-top').length) {
+              row['topSubtotal'] = $previousElement.prevAll('.subtotal-top');
+            }
+            break;
           }
+        }
+        else {
           break;
         }
       }
@@ -93,12 +103,17 @@ const buildPositionLastLevelRows = function(position) {
       lastLevelRows.push(row);
 
     });
-    window.buildPositionLastLevelRows = {};
+    if (!window.buildPositionLastLevelRows) {
+      window.buildPositionLastLevelRows = {};
+
+    }
     window.buildPositionLastLevelRows[position] = lastLevelRows;
+
   }
   return window.buildPositionLastLevelRows[position];
 };
 
+// Rebuild table with given rows (already sorted).
 const rebuildTable = function(rows) {
   let items = restructureTable(rows);
   let $newTbody = $('<tbody></tbody>');
@@ -108,6 +123,7 @@ const rebuildTable = function(rows) {
   $('table.list').append($newTbody);
 };
 
+// Flat rows structure.
 const flatItems = function(items, $tbody = null) {
   items.forEach(function(item) {
     $tbody.append(item.item);
@@ -117,6 +133,7 @@ const flatItems = function(items, $tbody = null) {
   });
 };
 
+// Restructure table from rows to hierarchical structure.
 const restructureTable = function(rows) {
   let items = [];
   rows.forEach(function(row){
@@ -158,27 +175,39 @@ const restructureTable = function(rows) {
     else {
       $parentSubtotal = false;
       items.forEach(function(item) {
-        if (item.item.isEqualNode(row.parentSubtotal[0])) {
-          $parentSubtotal = item
-          return;
+        if (row.parentSubtotal) {
+          if (item.item.isEqualNode(row.parentSubtotal[0])) {
+            $parentSubtotal = item
+            return;
+          }
         }
       });
-
-      if (!$parentSubtotal) {
-        $parentSubtotal = {
-          item: row.parentSubtotal[0],
-          childrenItems: []
-        };
-        items.push($parentSubtotal);
+      if (row.parentSubtotal) {
+        if (!$parentSubtotal) {
+          $parentSubtotal = {
+            item: row.parentSubtotal[0],
+            childrenItems: []
+          };
+          items.push($parentSubtotal);
+        }
       }
     }
-    $parentSubtotal.childrenItems.push({
-      item: row.row[0]
-    });
+    if ($parentSubtotal) {
+      $parentSubtotal.childrenItems.push({
+        item: row.row[0]
+      });
+    }
+    else {
+      items.push({
+        item: row.row[0],
+        childrenItems: []
+      });
+    }
   });
   return items;
 };
 
+// Sort given table either by total or a specific column.
 const sortTableBy = function (sortType, sortDirection, sortIndex = 0) {
   if (sortType === 'total') {
     let lastLevelRows = buildTotalLastLevelRows();
@@ -192,6 +221,7 @@ const sortTableBy = function (sortType, sortDirection, sortIndex = 0) {
   }
 };
 
+// Sort given rows in the given direction using the time index.
 const sortRows = function(rows, direction = 'DESC') {
   if (direction === 'ASC') {
     rows.sort(function(a, b) {
@@ -230,6 +260,7 @@ $(document).ready(function() {
     });
   });
 
+  // Set the sort handlers.
   $('thead .period, thead .total').each(function() {
     const contents = $(this).html();
     let newContent = $('<a class="sort-handler" href="#" data-sort="false" data-sort-direction="false"></a>');
@@ -247,7 +278,6 @@ $(document).ready(function() {
     }
     else if (currentDirection === 'ASC') {
       // Set back to default.
-      buildTotalLastLevelRows();
       lastLevelRows = window.originalLastLevelRows;
       rebuildTable(lastLevelRows);
       $('.sort-indicator').remove();
@@ -274,5 +304,8 @@ $(document).ready(function() {
       sortTableBy('period', currentDirection, columnIndex);
     }
   });
+
+  // Build total last level rows when everything is ready so that original total rows is preserved.
+  buildTotalLastLevelRows();
 
 });

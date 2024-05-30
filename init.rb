@@ -1,15 +1,23 @@
 require 'redmine'
 #require 'lib/redmine/helpers/time_report'
 
-# redirects homepage to /my/home
-require_dependency "welcome_controller_patch"
-require_dependency "timelog_report_patch"
-require_dependency "evolvingweb_extensions/hooks"
-require_dependency "editor_style_patch"
-require_dependency "timelog_controller_patch"
-require_dependency "query_model_patch"
-require_dependency "issue_import_patch"
-
+Rails.configuration.to_prepare do
+  # redirects homepage to /my/home
+  require_dependency "welcome_controller_patch"
+  require_dependency "timelog_helper_patch"
+  require_dependency "evolvingweb_extensions/hooks/js_timelog_report_hooks"
+  require_dependency "evolvingweb_extensions/hooks/js_issue_show_hooks"
+  require_dependency "evolvingweb_extensions/hooks/css_hooks"
+  require_dependency "editor_style_css_patch"
+  require_dependency "timelog_controller_patch"
+  require_dependency "query_model_patch"
+  require_dependency "issue_import_patch"
+  require_dependency "evolvingweb_extensions/changeset_link_creator"
+  require_dependency "evolvingweb_extensions/issue_query_patch"
+  require_dependency "evolvingweb_extensions/time_entry_query_patch"
+  require_dependency "evolvingweb_extensions/time_report_helper_patch"
+  require_dependency "query_custom_field_column_model_patch"
+end
 
 Redmine::Plugin.register :redmine_evolvingweb_extensions do
   name 'Redmine Evolving Web Extensions'
